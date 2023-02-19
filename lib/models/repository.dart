@@ -1,5 +1,5 @@
 
-import 'package:flutter_complete_guide/models/question.dart';
+import 'question_model.dart';
 
 
 class Repository {

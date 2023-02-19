@@ -1,20 +1,40 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_complete_guide/models/question.dart';
-import 'package:flutter_complete_guide/models/repository.dart';
+import './models/question_model.dart';
+import './models/repository.dart';
+import './widgets/quiz_view.dart';
+import './widgets/result_view.dart';
 
 void main() {
   runApp(MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   MyApp({super.key});
 
-  List<Question> questions = Repository().getQuestions();
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  
+  List<Question> _questions = Repository().getQuestions();
 
   int _questionIndex = 0;
-  _optionSelectedFor(Question question) {
-    print(question);
-    _questionIndex++;
+  int _score = 0;
+  void _optionSelectedFor(int score) {
+    
+    _score += score;
+    setState(() {
+      _questionIndex++;
+    });
+  }
+
+  void _resetQuiz() {
+
+    setState(() {
+      _questionIndex = 0;
+      _score = 0;
+    });
   }
   // This widget is the root of your application.
   @override
@@ -24,23 +44,76 @@ class MyApp extends StatelessWidget {
         appBar: AppBar(
           title: const Text('My First App'),
         ),
-        body: Column(
+        body: _questionIndex < _questions.length
+        ? QuizView(
+            questions: _questions, 
+            questionIndex: _questionIndex, 
+            selectionHandler: _optionSelectedFor
+          )
+        : ResultView(
+            score: _score, 
+            resetHandler: _resetQuiz
+          ),
+      )
+      );
+  }
+}
+
+/*
+class MyApp extends StatelessWidget {
+  MyApp({super.key});
+
+  List<Question> _questions = Repository().getQuestions();
+
+  int _questionIndex = 0;
+  int _score = 0;
+  void _optionSelectedFor(Question question) {
+    print(question.title);
+    _questionIndex++;
+  }
+
+  void _resetQuiz() {
+    _questionIndex = 0;
+    _score = 0;
+  }
+  // This widget is the root of your application.
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(
+          title: const Text('My First App'),
+        ),
+        body: _questionIndex < _questions.length
+        ? QuizView(questions: _questions, questionIndex: _questionIndex, selectionHandler: _optionSelectedFor)
+        : ResultView(score: _score, resetHandler: _resetQuiz),
+      )
+      );
+  }
+}
+*/
+
+
+/*
+Column(
           children: [
             Text(questions[_questionIndex].title),
-            ListView.builder(
+            Expanded(
+              child: 
+              ListView.builder(
               padding: const EdgeInsets.all(8),
               itemCount: questions[_questionIndex].options.length,
               itemBuilder: (BuildContext context, int index) {
                 return Container(
                   height: 50,
-                  color: Colors.blue,
-                  child: Center(child: Text(questions[_questionIndex].options[index].title),),
+                  margin: EdgeInsets.all(10),
+                  child: ElevatedButton(
+                    child: Text(questions[_questionIndex].options[index].title),
+                    onPressed: () => _optionSelectedFor(questions[_questionIndex]),),
                 );
               } ,
             )
+            )
           ],
         )
-      ),
-    );
-  }
-}
+*/
