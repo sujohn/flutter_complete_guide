@@ -4,23 +4,23 @@ import 'package:flutter_complete_guide/models/question_model.dart';
 class AnswerOptionView extends StatelessWidget {
   
   final Function selectionHandler;
-  final String optionText;
+  final Option option;
 
   AnswerOptionView({
-    required this.optionText, 
+    required this.option, 
     required this.selectionHandler,
   });
 
   @override
   Widget build(BuildContext context) {
 
-    print(optionText);
+    print(option.title);
     return Container(
       width: double.infinity,
       margin: const EdgeInsets.all(10),
       child: ElevatedButton(
-        child: Text(optionText),
-        onPressed: () => selectionHandler,
+        child: Text(option.title),
+        onPressed: () => selectionHandler(option.weight),
         ),
       );
   }

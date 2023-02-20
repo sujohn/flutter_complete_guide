@@ -17,10 +17,10 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   
-  List<Question> _questions = Repository().getQuestions();
+  final List<Question> _questions = Repository().getQuestions();
 
-  int _questionIndex = 0;
-  int _score = 0;
+  var _questionIndex = 0;
+  var _score = 0;
   void _optionSelectedFor(int score) {
     
     _score += score;
@@ -31,10 +31,10 @@ class _MyAppState extends State<MyApp> {
 
   void _resetQuiz() {
 
-    setState(() {
-      _questionIndex = 0;
-      _score = 0;
-    });
+      setState(() {
+        _questionIndex = 0;
+        _score = 0;
+      });
   }
   // This widget is the root of your application.
   @override
@@ -52,9 +52,9 @@ class _MyAppState extends State<MyApp> {
           )
         : ResultView(
             score: _score, 
-            resetHandler: _resetQuiz
+            resetHandler: () => _resetQuiz
           ),
-      )
+      ),
       );
   }
 }

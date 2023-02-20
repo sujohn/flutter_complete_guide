@@ -24,8 +24,8 @@ class QuizView extends StatelessWidget {
             itemCount: questions.length,
             itemBuilder: (context, index) {
               return AnswerOptionView(
-                optionText: questions[questionIndex].options[index].title,
-                selectionHandler: () => selectionHandler(questions[questionIndex].options[index].weight),
+                option: questions[questionIndex].options[index],
+                selectionHandler: selectionHandler,
               );;
             },
           ),
